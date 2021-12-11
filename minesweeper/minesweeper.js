@@ -1,4 +1,5 @@
 var difficulty="easy";
+var real,result,cell;
 var n=9,mines=9;
 var board=document.getElementById("gameboard");
 function change_difficulty(){
@@ -34,38 +35,110 @@ function setboard(){
         board.classList.add("hard");
         board.classList.remove("medium");
         board.classList.remove("easy");
-    }   
+    } 
+    startgame();  
 }
 function startgame(){
-    var result=true;
-    var real=new Array (n);
+    result=true;
+    real=new Array (n);
     for(let i=0;i<n;i++){
         real[i]=new Array(n);
     }
-    var my=new Array (n);
     for(let i=0;i<n;i++){
-        my[i]=new Array(n);
+        for(let j=0;j<n;j++){
+            real[i][j]=0;
+        }
     }
-    placemines(real);
-    while(result==true){
-        makemove();
-
-    }
-}
-function placemines(arr){
     for(let i=0;i<mines;i++){
         let x=Math.floor(Math.random()*n);
         let y=Math.floor(Math.random()*n);
-        arr[x][y]=1;
+        real[x][y]=-1;
     }
+    // placemines(real);
+    makemove();
 }
+
 function makemove(){
-    var cell=document.querySelectorAll(".cell");
+    cell=document.querySelectorAll(".cell");
     cell.forEach((element)=>{
-        element.addEventListener("click", listener)
+        element.addEventListener("click", input);
     })
 }
-function playing(){
-
+function input(){
+    let x=this.dataset.i;
+    let i,j;
+    i=Math.floor(x/n);
+    j=x%n;
+    console.log(i,j);
+    if(real[i][j]==-1){
+        alert("you lost");
+        setboard();
+    }
+    else{
+        openall(real,i,j);
+    }
+}
+function openall(arr,i,j){
+    let count=countmines(arr, i, j);
+    if(count==0){
+        if(i-1>=0&&j-1>=0){
+            openall(arr, i-1, j-1);
+        }
+        if(i-1>=0){
+            openall(arr, i-1, j);
+        }
+        if(i-1>=0&&j+1<n){
+            openall(arr, i-1, j+1);
+        }
+        if(j-1>=0){
+            openall(arr, i, j-1);
+        }
+        if(j+1<n){
+            openall(arr, i, j+1);
+        }
+        if(i+1<n&&j-1>=0){
+            openall(arr, i+1, j-1);
+        }
+        if(i+1<n){
+            openall(arr, i+1, j);
+        }
+        if(i+1<n&&j+1<n){
+            openall(arr, i+1, j+1);
+        }
+        
+    }
+    else{
+        let x=n*i+j;
+        cell[x-1].innerHTML=count;
+        cell[x-1].classList.add("white");
+    }
+}
+function countmines(arr,i,j){
+    let count=0;
+    if(i-1>=0&&j-1>=0&&arr[i-1][j-1]==-1){
+        count++;
+    }
+    if(i-1>=0&&arr[i-1][j]==-1){
+        count++;
+    }
+    if(i-1>=0&&j+1<n&&arr[i-1][j+1]==-1){
+        count++;
+    }
+    if(j-1>=0&&arr[i][j-1]==-1){
+        count++;
+    }
+    if(j+1<n&&arr[i][j+1]==-1){
+        count++;
+    }
+    if(i+1<n&&j-1>=0&&arr[i+1][j-1]==-1){
+        count++;
+    }
+    if(i+1<n&&arr[i+1][j]==-1){
+        count++;
+    }
+    if(i+1<n&&j+1<n&&arr[i+1][j+1]==-1){
+        count++;
+    }
+    return count;
 }
 
