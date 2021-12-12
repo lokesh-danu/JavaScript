@@ -8,14 +8,12 @@ function change_difficulty(){
     console.log(difficulty);
 }
 var time=document.getElementById("time");
-// time.innerHTML="lokesh";
 t=0;
 setInterval(()=>{
     t+=1;
     time.innerHTML=t;
 },1000);
-var tile=document.createElement("div");
-tile.classList.add("cell", "b");
+
 function setboard(){
     // board.innerHTML="";
     if(difficulty=="easy"){         // 9*9      10
@@ -39,7 +37,6 @@ function setboard(){
     startgame();  
 }
 function startgame(){
-    result=true;
     real=new Array (n);
     for(let i=0;i<n;i++){
         real[i]=new Array(n);
@@ -53,8 +50,8 @@ function startgame(){
         let x=Math.floor(Math.random()*n);
         let y=Math.floor(Math.random()*n);
         real[x][y]=-1;
+        // console.log(`${x} ${y}`);
     }
-    // placemines(real);
     makemove();
 }
 
@@ -66,9 +63,12 @@ function makemove(){
 }
 function input(){
     let x=this.dataset.i;
+    x=x-1;
+    console.log(x);
     let i,j;
     i=Math.floor(x/n);
     j=x%n;
+    // j=j-1;
     console.log(i,j);
     if(real[i][j]==-1){
         alert("you lost");
@@ -79,7 +79,15 @@ function input(){
     }
 }
 function openall(arr,i,j){
+    let x=n*i+j;
+    console.log(x);
+    if(cell[x].dataset.status=="open"){
+        return;
+    }
     let count=countmines(arr, i, j);
+    cell[x].dataset.status="open";
+    cell[x].innerHTML=count;
+    cell[x].classList.add("white");
     if(count==0){
         if(i-1>=0&&j-1>=0){
             openall(arr, i-1, j-1);
@@ -106,11 +114,6 @@ function openall(arr,i,j){
             openall(arr, i+1, j+1);
         }
         
-    }
-    else{
-        let x=n*i+j;
-        cell[x-1].innerHTML=count;
-        cell[x-1].classList.add("white");
     }
 }
 function countmines(arr,i,j){
