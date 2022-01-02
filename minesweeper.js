@@ -2,8 +2,8 @@ var difficulty="easy";
 var real,result,cell;
 var n=9,mines=9;
 var board=document.getElementById("gameboard");
-setboard();
 setcell(81);
+setboard();
 function setcell(b){
     var tile=document.querySelectorAll("#gameboard>div");
     for(let i=0;i<b;i++){
