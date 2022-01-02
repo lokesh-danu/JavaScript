@@ -3,7 +3,16 @@ var real,result,cell;
 var n=9,mines=9;
 var board=document.getElementById("gameboard");
 setboard();
-
+setcell(81);
+function setcell(b){
+    var tile=document.querySelectorAll("#gameboard>div");
+    for(let i=0;i<b;i++){
+        tile[i].classList.add("cell");
+    }
+    for(let i=b;i<576;i++){
+        tile[i].classList.remove("cell");
+    }
+}
 function change_difficulty(){
     difficulty=document.getElementById("difficulty").value;
     setboard();
@@ -26,12 +35,14 @@ function setboard(){
     }
     else if(difficulty=="medium"){  //16*16         40
         n=16;mines=40;
+        setcell(256);
         board.classList.add("medium");
         board.classList.remove("easy");
         board.classList.remove("hard");
     }
     else{       //24*24                 99
         n=24;mines=99;
+        setcell(576);
         board.classList.add("hard");
         board.classList.remove("medium");
         board.classList.remove("easy");
