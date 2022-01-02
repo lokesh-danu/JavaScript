@@ -2,17 +2,19 @@ var difficulty="easy";
 var real,result,cell;
 var n=9,mines=9;
 var board=document.getElementById("gameboard");
+setboard();
+
 function change_difficulty(){
     difficulty=document.getElementById("difficulty").value;
     setboard();
     console.log(difficulty);
 }
 var time=document.getElementById("time");
-t=0;
-setInterval(()=>{
-    t+=1;
-    time.innerHTML=t;
-},1000);
+// t=0;
+// setInterval(()=>{
+//     t+=1;
+//     time.innerHTML=t;
+// },1000);
 
 function setboard(){
     // board.innerHTML="";
@@ -29,7 +31,7 @@ function setboard(){
         board.classList.remove("hard");
     }
     else{       //24*24                 99
-        n=24;mines=24;
+        n=24;mines=99;
         board.classList.add("hard");
         board.classList.remove("medium");
         board.classList.remove("easy");
@@ -59,17 +61,23 @@ function makemove(){
     cell=document.querySelectorAll(".cell");
     cell.forEach((element)=>{
         element.addEventListener("click", input);
+        element.addEventListener("contextmenu", (e)=>{e.preventDefault()});
+        element.addEventListener("contextmenu", rightclick);
     })
+}
+function rightclick(){
+    // alert("you have right clicked");
+    this.classList.toggle("flag");
 }
 function input(){
     let x=this.dataset.i;
     x=x-1;
-    console.log(x);
+    // console.log(x);
     let i,j;
     i=Math.floor(x/n);
     j=x%n;
     // j=j-1;
-    console.log(i,j);
+    // console.log(i,j);
     if(real[i][j]==-1){
         alert("you lost");
         setboard();

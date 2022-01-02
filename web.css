@@ -34,3 +34,10 @@
 .open{
     background-color: aliceblue;
 }
+.flag{
+    background-image: url('img/flag.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    background-color: green;
+}
